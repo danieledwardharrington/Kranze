@@ -17,7 +17,7 @@ class GroceryEntity(@ColumnInfo(name = "grocery_name")
         id = newId
     }
 
-    fun getiD(): Long {
+    fun getId(): Long {
         return id
     }
 
