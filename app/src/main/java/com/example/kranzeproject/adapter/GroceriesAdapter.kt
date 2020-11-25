@@ -1,8 +1,10 @@
 package com.example.kranzeproject.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kranzeproject.R
 import com.example.kranzeproject.persistence.GroceryEntity
 import kotlinx.android.synthetic.main.card_view_grocery_item.view.*
 
@@ -20,7 +22,7 @@ class GroceriesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        TODO("Not yet implemented")
+        return GroceriesAdapter.GroceryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.card_view_grocery_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -45,7 +47,6 @@ class GroceriesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     class GroceryViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val context = itemView.context
         private val groceryNameTV = itemView.grocery_name_tv
         private val groceryCountTV = itemView.grocery_count_tv
         private val grocerIdTV = itemView.grocery_id_tv
@@ -53,11 +54,11 @@ class GroceriesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(groceryEntity: GroceryEntity) {
             groceryNameTV.text = groceryEntity.getName()
-            groceryCountTV.text = groceryEntity.getCount().toString()
-            grocerIdTV.text = groceryEntity.getId().toString()
+            groceryCountTV.text = "Count: ${groceryEntity.getCount().toString()}"
+            grocerIdTV.text = "ID: ${groceryEntity.getId().toString()}"
         }
 
-    }//viewholder
+    }
 
     private fun removeAt(position: Int) {
         groceriesList.removeAt(position)
@@ -65,7 +66,7 @@ class GroceriesAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyItemRangeChanged(position, groceriesList.size)
     }
 
-    private fun add(groceryEntity: GroceryEntity) {
+    fun add(groceryEntity: GroceryEntity) {
         groceriesList.add(groceryEntity)
         notifyDataSetChanged()
     }

@@ -3,11 +3,9 @@ package com.example.kranzeproject.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.kranzeproject.persistence.GroceryDatabase
 import com.example.kranzeproject.persistence.GroceryEntity
-import com.example.kranzeproject.persistence.GroceryRepository
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,8 +19,8 @@ class GroceryViewModel(application: Application): ViewModel() {
 
     fun insert(groceryEntity: GroceryEntity) {
         groceryDatabase.groceryDao().insert(groceryEntity).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-            {},
-            {}
+            {getAllGroceries()},
+            {Log.d(TAG, it.toString())}
         ).let { compositeDisposable.add(it) }
     }
 
@@ -34,7 +32,10 @@ class GroceryViewModel(application: Application): ViewModel() {
     }
 
     fun update(groceryEntity: GroceryEntity) {
-        //Completable.fromAction { groceryRepository.update(groceryEntity) }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe()
+        groceryDatabase.groceryDao().update(groceryEntity).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+            {getAllGroceries()},
+            { Log.d(TAG, it.toString()) }
+        ).let { compositeDisposable.add(it) }
     }
 
     fun getAllGroceries() {
